@@ -26,6 +26,6 @@ https://github.com/NothingwillbeNothing/NITechVacancyViewer/actions/runs/3851807
 
 The downloaded IPA was independently checked for version 1.1/build 3, an arm64 iPhoneOS executable, iOS 16 minimum, and unsigned packaging.
 
-Live university/Microsoft authentication and reservation retrieval with the new portal still require confirmation on the user's device. CI does not exercise protected university pages or run UI tests.
+On 2026-10-14, the user confirmed that version 1.1 (build 3) works as expected after sideloading on their iPhone. Their screenshots show successful live reservation retrieval, building vacancy counts, and today's room reservations through the updated portal.
 
-Live NITech authentication and Campus Square parsing need MAINS-X or the university VPN and an account. No live credentials were available during this conversion.
+This is user-confirmed on-device validation. CI does not exercise protected university pages or run UI tests. No live credentials were supplied to the development environment.
