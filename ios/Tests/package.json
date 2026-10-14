@@ -1,0 +1,7 @@
+{
+  "name": "nitech-ios-parser-tests",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": { "test": "node --test extraction.test.cjs" },
+  "devDependencies": { "jsdom": "26.1.0" }
+}

@@ -1,0 +1,1439 @@
+[
+  {
+    "name": "0111",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1673_建築計画演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1673_建築計画演習"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2717_環境都市工学実験Ⅰ"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2717_環境都市工学実験Ⅰ"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "2717_環境都市工学実験Ⅰ"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "2717_環境都市工学実験Ⅰ"
+      }
+    ]
+  },
+  {
+    "name": "0112",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1552_電気回路Ⅱ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1552_電気回路Ⅱ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "3551_電気機械設計"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "3551_電気機械設計"
+      },
+      {
+        "start": 780,
+        "end": 1025,
+        "description": "ゼミ"
+      }
+    ]
+  },
+  {
+    "name": "0113",
+    "events": []
+  },
+  {
+    "name": "0211",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2004_構造材料特論"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2004_構造材料特論"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0062_力学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0062_力学"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "2157_知的財産権"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "2157_知的財産権"
+      }
+    ]
+  },
+  {
+    "name": "0212",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0067_物理学演習Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0067_物理学演習Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2461_量子力学演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2461_量子力学演習"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2461_量子力学演習"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2461_量子力学演習"
+      }
+    ]
+  },
+  {
+    "name": "0221",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 1070,
+        "end": 1115,
+        "description": "3703_半導体物性"
+      },
+      {
+        "start": 1115,
+        "end": 1160,
+        "description": "3703_半導体物性"
+      },
+      {
+        "start": 1170,
+        "end": 1215,
+        "description": "3708_精密プロセス工学"
+      },
+      {
+        "start": 1215,
+        "end": 1260,
+        "description": "3708_精密プロセス工学"
+      }
+    ]
+  },
+  {
+    "name": "0222",
+    "events": [
+      {
+        "start": 530,
+        "end": 620,
+        "description": "2617_知能プログラミング演習I"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2617_知能プログラミング演習Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "4019_時系列パターン認識"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "4019_時系列パターン認識"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "0703_社会工学基礎Ⅰ"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "0703_社会工学基礎Ⅰ"
+      },
+      {
+        "start": 1170,
+        "end": 1215,
+        "description": "2704_電気磁気学Ⅱ"
+      },
+      {
+        "start": 1215,
+        "end": 1260,
+        "description": "2704_電気磁気学Ⅱ"
+      }
+    ]
+  },
+  {
+    "name": "0223",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2407_生体分子化学"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2407_生体分子化学"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2003_量子光学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2003_量子光学"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "0703_社会工学基礎Ⅰ"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "0703_社会工学基礎Ⅰ"
+      }
+    ]
+  },
+  {
+    "name": "0231",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0066_物理学演習Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0066_物理学演習Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1507_熱力学Ⅱ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1507_熱力学Ⅱ"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "3452_材料機能工学セミナー"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "3452_材料機能工学セミナー"
+      }
+    ]
+  },
+  {
+    "name": "0232",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "7425_高温極限環境セラミックス"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "7425_高温極限環境セラミックス"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0751_創造工学概論"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0751_創造工学概論"
+      }
+    ]
+  },
+  {
+    "name": "0233",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0652_社会工学概論"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0652_社会工学概論"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1605_データ構造とアルゴリズム"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1605_データ構造とアルゴリズム"
+      }
+    ]
+  },
+  {
+    "name": "0321",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1508_熱力学Ⅱ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1508_熱力学Ⅱ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2655_建築設備学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2655_建築設備学"
+      },
+      {
+        "start": 1070,
+        "end": 1115,
+        "description": "2702_流体力学Ⅱ"
+      },
+      {
+        "start": 1115,
+        "end": 1160,
+        "description": "2702_流体力学Ⅱ"
+      }
+    ]
+  },
+  {
+    "name": "0322",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2009_熱物性基礎論"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2009_熱物性基礎論"
+      }
+    ]
+  },
+  {
+    "name": "0323",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2711_国際経営戦略"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2711_国際経営戦略"
+      }
+    ]
+  },
+  {
+    "name": "1121",
+    "events": []
+  },
+  {
+    "name": "1129",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1707_社会セキュリティ・マネジメント"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1707_社会セキュリティ・マネジメント"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2713_社会インフラマネジメント"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2713_社会インフラマネジメント"
+      },
+      {
+        "start": 1070,
+        "end": 1115,
+        "description": "3808_環境都市応用演習Ⅳ"
+      },
+      {
+        "start": 1115,
+        "end": 1160,
+        "description": "3808_環境都市応用演習Ⅳ"
+      }
+    ]
+  },
+  {
+    "name": "1221",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "3014_機械制御特論"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "3014_機械制御特論"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1601_情報理論"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1601_情報理論"
+      },
+      {
+        "start": 780,
+        "end": 925,
+        "description": "ゼミ"
+      }
+    ]
+  },
+  {
+    "name": "1222",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1713_構造力学Ⅰ演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1713_構造力学Ⅰ演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2417_計算機化学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2417_計算機化学"
+      }
+    ]
+  },
+  {
+    "name": "1621",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "3003_電力システム設計特論"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "3003_電力システム設計特論"
+      },
+      {
+        "start": 720,
+        "end": 1070,
+        "description": "ゼミ"
+      }
+    ]
+  },
+  {
+    "name": "2029",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "4011_信号処理特論Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "4011_信号処理特論Ⅰ"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "2157_知的財産権"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "2157_知的財産権"
+      },
+      {
+        "start": 1170,
+        "end": 1215,
+        "description": "1904_プログラミング基礎"
+      },
+      {
+        "start": 1215,
+        "end": 1260,
+        "description": "1904_プログラミング基礎"
+      }
+    ]
+  },
+  {
+    "name": "2139",
+    "events": []
+  },
+  {
+    "name": "2311",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0112_化学結合論"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0112_化学結合論"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0114_化学結合論"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0114_化学結合論"
+      },
+      {
+        "start": 880,
+        "end": 1070,
+        "description": "事務局"
+      }
+    ]
+  },
+  {
+    "name": "2312",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2502_システムデザイン"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2502_システムデザイン"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2453_固体物理Ⅱ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2453_固体物理Ⅱ"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "3652_建築設計・デザイン制作"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "3652_建築設計・デザイン制作"
+      }
+    ]
+  },
+  {
+    "name": "2321",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1412_高分子科学Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1412_高分子科学Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1752_実践問題解決"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1752_実践問題解決"
+      }
+    ]
+  },
+  {
+    "name": "2323",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1402_基礎化学工学"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1402_基礎化学工学"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2505_電子機械工学Ⅰ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2505_電子機械工学Ⅰ"
+      },
+      {
+        "start": 780,
+        "end": 870,
+        "description": "ガイダンス"
+      }
+    ]
+  },
+  {
+    "name": "2331",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2401_分光分析化学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2401_分光分析化学"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "1527_機械製図Ⅰ"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "1527_機械製図Ⅰ"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "1527_機械製図Ⅰ"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "1527_機械製図Ⅰ"
+      }
+    ]
+  },
+  {
+    "name": "2332",
+    "events": []
+  },
+  {
+    "name": "2341",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1455_応用電磁気学Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1455_応用電磁気学Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1603_情報理論"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1603_情報理論"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2404_電気化学"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2404_電気化学"
+      }
+    ]
+  },
+  {
+    "name": "2342",
+    "events": [
+      {
+        "start": 780,
+        "end": 1260,
+        "description": "課外活動"
+      }
+    ]
+  },
+  {
+    "name": "2421",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2659_住文化論"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2659_住文化論"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2416_機能性ハイブリッド材料"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2416_機能性ハイブリッド材料"
+      }
+    ]
+  },
+  {
+    "name": "2439",
+    "events": [
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2717_環境都市工学実験Ⅰ"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2717_環境都市工学実験Ⅰ"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "2717_環境都市工学実験Ⅰ"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "2717_環境都市工学実験Ⅰ"
+      }
+    ]
+  },
+  {
+    "name": "5111",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0061_力学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0061_力学"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2553_信号処理回路"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2553_信号処理回路"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "0113_化学結合論"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "0113_化学結合論"
+      },
+      {
+        "start": 980,
+        "end": 1025,
+        "description": "2411_薬科学概論"
+      },
+      {
+        "start": 1025,
+        "end": 1070,
+        "description": "2411_薬科学概論"
+      }
+    ]
+  },
+  {
+    "name": "5211",
+    "events": [
+      {
+        "start": 530,
+        "end": 620,
+        "description": "予約済"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0105_基礎化学"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0105_基礎化学"
+      },
+      {
+        "start": 720,
+        "end": 1080,
+        "description": "予約済"
+      }
+    ]
+  },
+  {
+    "name": "5212",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0102_基礎化学"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0102_基礎化学"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1561_ベクトル解析"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1561_ベクトル解析"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "0103_基礎化学"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "0103_基礎化学"
+      },
+      {
+        "start": 880,
+        "end": 1070,
+        "description": "予約済"
+      }
+    ]
+  },
+  {
+    "name": "5214",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0028_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0028_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0032_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0032_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "2161_会計学"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "2161_会計学"
+      }
+    ]
+  },
+  {
+    "name": "5215",
+    "events": []
+  },
+  {
+    "name": "5216",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0028_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0028_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0032_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0032_微分積分Ⅰ及び演習"
+      }
+    ]
+  },
+  {
+    "name": "5217",
+    "events": [
+      {
+        "start": 1070,
+        "end": 1115,
+        "description": "1902_電気回路基礎"
+      },
+      {
+        "start": 1115,
+        "end": 1160,
+        "description": "1902_電気回路基礎"
+      }
+    ]
+  },
+  {
+    "name": "5218",
+    "events": [
+      {
+        "start": 1170,
+        "end": 1215,
+        "description": "0203_力学"
+      },
+      {
+        "start": 1215,
+        "end": 1260,
+        "description": "0203_力学"
+      }
+    ]
+  },
+  {
+    "name": "5221",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0035_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0035_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0021_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0021_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "0651_社会工学概論"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "0651_社会工学概論"
+      }
+    ]
+  },
+  {
+    "name": "5222",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0011_線形代数Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0011_線形代数Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0033_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0033_微分積分Ⅰ及び演習"
+      }
+    ]
+  },
+  {
+    "name": "5223",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0012_線形代数Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0012_線形代数Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0006_線形代数Ⅰ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0006_線形代数Ⅰ"
+      }
+    ]
+  },
+  {
+    "name": "5224",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0027_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0027_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0022_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0022_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 780,
+        "end": 925,
+        "description": "課外活動"
+      },
+      {
+        "start": 925,
+        "end": 1260,
+        "description": "課外活動"
+      }
+    ]
+  },
+  {
+    "name": "5225",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "1013_高分子物理化学特論Ⅰ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "1013_高分子物理化学特論Ⅰ"
+      },
+      {
+        "start": 1070,
+        "end": 1260,
+        "description": "課外活動"
+      }
+    ]
+  },
+  {
+    "name": "5226",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0027_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0027_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0022_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0022_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 1070,
+        "end": 1260,
+        "description": "課外活動"
+      }
+    ]
+  },
+  {
+    "name": "5227",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "1008_分子細胞生物学特論"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "1008_分子細胞生物学特論"
+      }
+    ]
+  },
+  {
+    "name": "5228",
+    "events": [
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2851_環境都市創造実験"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2851_環境都市創造実験"
+      },
+      {
+        "start": 880,
+        "end": 925,
+        "description": "2851_環境都市創造実験"
+      },
+      {
+        "start": 925,
+        "end": 970,
+        "description": "2851_環境都市創造実験"
+      }
+    ]
+  },
+  {
+    "name": "5231",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0036_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0036_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0020_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0020_微分積分Ⅰ及び演習"
+      }
+    ]
+  },
+  {
+    "name": "5232",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0025_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0025_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0019_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0019_微分積分Ⅰ及び演習"
+      }
+    ]
+  },
+  {
+    "name": "5233",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0013_線形代数Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0013_線形代数Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0005_線形代数Ⅰ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0005_線形代数Ⅰ"
+      },
+      {
+        "start": 1070,
+        "end": 1115,
+        "description": "0502_English SeminarⅠ"
+      },
+      {
+        "start": 1115,
+        "end": 1160,
+        "description": "0502_English SeminarⅠ"
+      }
+    ]
+  },
+  {
+    "name": "5234",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0026_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0026_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0034_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0034_微分積分Ⅰ及び演習"
+      }
+    ]
+  },
+  {
+    "name": "5235",
+    "events": []
+  },
+  {
+    "name": "5236",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "0026_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "0026_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "0034_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "0034_微分積分Ⅰ及び演習"
+      },
+      {
+        "start": 780,
+        "end": 970,
+        "description": "ゼミ"
+      }
+    ]
+  },
+  {
+    "name": "5237",
+    "events": [
+      {
+        "start": 530,
+        "end": 575,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 575,
+        "end": 620,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2616_ネットワーク系演習Ⅰ"
+      }
+    ]
+  },
+  {
+    "name": "5238",
+    "events": []
+  },
+  {
+    "name": "9021(ラーニング・コモンズ)",
+    "events": [
+      {
+        "start": 630,
+        "end": 675,
+        "description": "2461_量子力学演習"
+      },
+      {
+        "start": 675,
+        "end": 720,
+        "description": "2461_量子力学演習"
+      },
+      {
+        "start": 780,
+        "end": 825,
+        "description": "2461_量子力学演習"
+      },
+      {
+        "start": 825,
+        "end": 870,
+        "description": "2461_量子力学演習"
+      }
+    ]
+  },
+  {
+    "name": "O19-219",
+    "events": []
+  }
+]

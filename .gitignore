@@ -54,3 +54,11 @@ site
 *.tflite
 
 spec/
+
+# iOS / Xcode
+ios/.build/
+ios/build/
+ios/DerivedData/
+ios/Tests/node_modules/
+**/xcuserdata/
+*.xcuserstate
