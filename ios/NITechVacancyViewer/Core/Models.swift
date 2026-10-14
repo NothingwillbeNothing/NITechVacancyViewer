@@ -114,6 +114,8 @@ enum ViewerError: LocalizedError {
     case untrustedNavigation
     case timeout
     case credentialStorage(Int32)
+    case sessionStorage
+    case sessionExpired
 
     var errorDescription: String? {
         switch self {
@@ -131,6 +133,10 @@ enum ViewerError: LocalizedError {
             return "通信がタイムアウトしました。MAINS-Xまたは大学VPNへの接続を確認してください。"
         case .credentialStorage:
             return "認証情報をキーチェーンに保存できませんでした。"
+        case .sessionStorage:
+            return "保存したログイン情報を読み込めませんでした。再度ログインしてください。"
+        case .sessionExpired:
+            return "ログインの有効期限が切れました。大学アカウントで再度ログインしてください。"
         }
     }
 }

@@ -10,6 +10,7 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
     @Published private(set) var showsLogin = false
     @Published private(set) var loginMessage = "大学の画面でログインしてください。"
     @Published private(set) var currentHost = PortalConfiguration.host
+    @Published private(set) var sessionWarning: String?
     private var activeNavigation: WKNavigation?
     private var continuation: CheckedContinuation<ScheduleSnapshot, Error>?
     private var timeoutTask: Task<Void, Never>?
@@ -20,15 +21,37 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
     private var followedWeek = false
     private var extractionInProgress = false
     private var navigationCount = 0
+    private let session = CampusSessionPersistence()
+    private var remembersSession = true
+    private var interactiveLogin = false
+    private var requiresReauthentication = false
 
-    func configureSession(remember: Bool) {
+    func configureSession(remember: Bool) async throws {
+        cancel()
+        session.stop()
+        if !remember {
+            try session.clear()
+            // Opting out also removes cookies left by an earlier remembered login.
+            await WKWebsiteDataStore.default().removeData(
+                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast
+            )
+        }
+        remembersSession = remember
         dataStore = remember ? .default() : .nonPersistent()
+        sessionWarning = nil
+        session.onFailure = { [weak self] error in self?.sessionWarning = error.localizedDescription }
     }
 
     func fetch(interactive: Bool) async throws -> ScheduleSnapshot {
         cancel()
         let id = UUID()
         requestID = id
+        if remembersSession {
+            if interactive { session.observe(dataStore.httpCookieStore) }
+            else { try await session.restore(into: dataStore.httpCookieStore) }
+        }
+        try Task.checkCancellation()
+        guard requestID == id else { throw CancellationError() }
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = dataStore
         let view = WKWebView(frame: .zero, configuration: configuration)
@@ -40,6 +63,8 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
         followedWeek = false
         extractionInProgress = false
         navigationCount = 0
+        interactiveLogin = interactive
+        requiresReauthentication = false
         showsLogin = interactive
         loginMessage = "大学の画面でログインしてください。認証後に予約状況を読み込みます。"
         currentHost = PortalConfiguration.host
@@ -62,12 +87,46 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
         })
     }
 
-    func cancel() { finish(.failure(CancellationError())) }
+    func cancel() {
+        requestID = UUID()
+        finish(.failure(requiresReauthentication ? ViewerError.sessionExpired : CancellationError()))
+    }
 
-    func clearSession() async {
+    func clearSession() async throws {
         cancel()
+        // Stop pending observer saves before deleting the archive and WebKit data.
+        var storageError: Error?
+        do { try session.clear() }
+        catch { storageError = error }
         await dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast)
+        if !dataStore.isPersistent {
+            await WKWebsiteDataStore.default().removeData(
+                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast
+            )
+        }
         dataStore = .default()
+        sessionWarning = nil
+        if let storageError { throw storageError }
+    }
+
+    func invalidateSavedSession() throws {
+        try session.clear()
+    }
+
+    private func requestLogin() {
+        if !interactiveLogin {
+            requiresReauthentication = true
+            loginMessage = ViewerError.sessionExpired.localizedDescription
+        }
+        showsLogin = true
+    }
+
+    func saveSessionBeforeBackgrounding() async {
+        guard remembersSession else { return }
+        // Only an already verified session should be saved during a login attempt.
+        do { try await session.saveIfConfirmed() }
+        catch is CancellationError { }
+        catch { sessionWarning = error.localizedDescription }
     }
 
     private func finish(_ result: Result<ScheduleSnapshot, Error>) {
@@ -105,8 +164,11 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
             navigationCount += 1
             currentHost = url.host ?? PortalConfiguration.host
             if url.host != PortalConfiguration.host {
-                showsLogin = true
-                loginMessage = "大学・Microsoftの画面で認証を完了してください。"
+                stage = .authentication
+                if interactiveLogin {
+                    showsLogin = true
+                    loginMessage = "大学・Microsoftの画面で認証を完了してください。"
+                }
             }
         }
         guard navigationCount < 60 else {
@@ -122,7 +184,7 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
         if response.isForMainFrame, let http = response.response as? HTTPURLResponse,
            !(200...399).contains(http.statusCode), response.response.url?.host == PortalConfiguration.host {
             decisionHandler(.cancel)
-            finish(.failure(ViewerError.http(http.statusCode)))
+            finish(.failure(http.statusCode == 401 ? ViewerError.sessionExpired : ViewerError.http(http.statusCode)))
         } else { decisionHandler(.allow) }
     }
 
@@ -132,7 +194,8 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
         guard let url = webView.url else { return }
         currentHost = url.host ?? PortalConfiguration.host
         guard url.host == PortalConfiguration.host else {
-            showsLogin = true
+            // Keep the browser alive: SSO may still complete without user input.
+            requestLogin()
             return // Wait for the actual university/Microsoft login redirect.
         }
         extractionInProgress = true
@@ -142,15 +205,24 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
                 let probe = """
                 JSON.stringify({
                   tables: document.querySelectorAll('.kyuko-shisetsu-nofixed').length,
+                  login: !!document.querySelector('input[type="password"]'),
                   week: Array.from(document.querySelectorAll('a[href]')).find(a => a.textContent.trim() === '週表示')?.href || '',
                   facility: Array.from(document.querySelectorAll('a[href]')).find(a => /KHW0001300-flow|施設利用状況/.test(a.href + ' ' + a.textContent))?.href || ''
                 })
                 """
                 guard let json = try await webView.evaluateJavaScript(probe) as? String,
                       let data = json.data(using: .utf8) else { throw ViewerError.layoutChanged }
-                struct Page: Decodable { let tables: Int; let week: String; let facility: String }
+                struct Page: Decodable { let tables: Int; let login: Bool; let week: String; let facility: String }
                 let page = try JSONDecoder().decode(Page.self, from: data)
                 guard self.webView === webView, self.continuation != nil else { return }
+                if page.login {
+                    extractionInProgress = false
+                    if interactiveLogin {
+                        showsLogin = true
+                        loginMessage = "大学の画面で再度ログインしてください。"
+                    } else { requestLogin() }
+                    return
+                }
                 if !page.week.isEmpty && !followedWeek {
                     guard let link = URL(string: page.week), let target = PortalConfiguration.campusURL(link) else {
                         throw ViewerError.untrustedNavigation
@@ -172,6 +244,12 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
                     guard self.webView === webView, self.continuation != nil else { return }
                     let snapshot = try ScheduleDecoder.decode(payload)
                     guard snapshot.rooms(on: Date()) != nil else { throw ViewerError.layoutChanged }
+                    if remembersSession {
+                        do { try await session.saveConfirmedSession() }
+                        catch is CancellationError { throw CancellationError() }
+                        catch { sessionWarning = error.localizedDescription }
+                    }
+                    guard self.webView === webView, self.continuation != nil else { return }
                     finish(.success(snapshot))
                     return
                 }
@@ -190,7 +268,8 @@ final class CampusSquareService: NSObject, ObservableObject, WKNavigationDelegat
                 // The new portal may use a different menu. Leave it interactive
                 // so the user can choose the actual facility reservation page.
                 showsLogin = true
-                loginMessage = "大学の画面から「施設利用状況参照」を開いてください。予約表を読み取るとアプリに戻ります。"
+                loginMessage = requiresReauthentication ? ViewerError.sessionExpired.localizedDescription
+                    : "大学の画面から「施設利用状況参照」を開いてください。予約表を読み取るとアプリに戻ります。"
                 extractionInProgress = false
             } catch {
                 guard self.webView === webView else { return }

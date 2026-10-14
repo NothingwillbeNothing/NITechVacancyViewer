@@ -12,6 +12,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section("全般") {
+                SessionStorageWarning(service: store.campus)
                 Picker("テーマ", selection: $appearance) {
                     Text("システム設定").tag("system")
                     Text("ライト").tag("light")
@@ -45,6 +46,17 @@ struct SettingsView: View {
             get: { store.errorMessage != nil }, set: { if !$0 { store.errorMessage = nil } }
         )) { Button("OK") { store.errorMessage = nil } } message: {
             Text(store.errorMessage ?? "")
+        }
+    }
+}
+
+private struct SessionStorageWarning: View {
+    @ObservedObject var service: CampusSquareService
+
+    var body: some View {
+        if let warning = service.sessionWarning {
+            Label(warning, systemImage: "exclamationmark.triangle")
+                .font(.footnote).foregroundStyle(.red)
         }
     }
 }

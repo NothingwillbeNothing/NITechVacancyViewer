@@ -22,4 +22,13 @@ enum PortalConfiguration {
             || host == "login.microsoft.com" || host == "login.windows.net"
             || host == "login.live.com" || host.hasSuffix(".msauth.net")
     }
+
+    static func isAllowedCookieDomain(_ domain: String) -> Bool {
+        let host = domain.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: "."))
+        guard !host.isEmpty, let url = URL(string: "https://\(host)/"), url.host == host else { return false }
+        // SSO cookies can be scoped to the parent authentication domain.
+        return host == "nitech.ac.jp" || host == "microsoftonline.com" || host == "msauth.net"
+            || host == "microsoft.com" || host == "windows.net" || host == "live.com"
+            || isAllowedNavigation(url)
+    }
 }

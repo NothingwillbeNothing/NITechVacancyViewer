@@ -36,23 +36,23 @@ final class AppStore: ObservableObject {
         // new sessions use only the portal's browser cookie store.
         try? legacyCredentials.clear()
         let remember = UserDefaults.standard.object(forKey: "rememberCampusSession") as? Bool ?? true
-        campus.configureSession(remember: remember)
-        if UserDefaults.standard.bool(forKey: "hasCampusSession") {
+        if remember && UserDefaults.standard.bool(forKey: "hasCampusSession") {
             snapshot = cache.load()
             isSignedIn = snapshot?.rooms(on: now) != nil
-            loadPortal(interactive: false)
+            loadPortal(interactive: false, remember: remember)
         }
     }
 
     func signIn(remember: Bool) {
-        campus.configureSession(remember: remember)
         UserDefaults.standard.set(remember, forKey: "rememberCampusSession")
-        loadPortal(interactive: true)
+        loadPortal(interactive: true, remember: remember)
     }
 
-    private func loadPortal(interactive: Bool) {
+    private func loadPortal(interactive: Bool, remember: Bool? = nil) {
         beginOperation { [weak self] id in
             guard let self else { return }
+            if let remember { try await campus.configureSession(remember: remember) }
+            try Task.checkCancellation()
             let result = try await campus.fetch(interactive: interactive)
             try Task.checkCancellation()
             guard generation == id else { return }
@@ -97,6 +97,11 @@ final class AppStore: ObservableObject {
         else if !isDemo && !hasTodayData && !isLoading { refresh() }
     }
 
+    func saveSessionBeforeBackgrounding() async {
+        guard isSignedIn, !isDemo else { return }
+        await campus.saveSessionBeforeBackgrounding()
+    }
+
     func signOut() {
         if isDemo {
             stopOperation()
@@ -105,7 +110,7 @@ final class AppStore: ObservableObject {
         }
         beginOperation { [weak self] id in
             guard let self else { return }
-            await campus.clearSession()
+            try await campus.clearSession()
             guard generation == id else { return }
             try cache.clear()
             try? legacyCredentials.clear()
@@ -145,6 +150,11 @@ final class AppStore: ObservableObject {
             catch is CancellationError { }
             catch {
                 guard let self, generation == id else { return }
+                if let failure = error as? ViewerError, case .sessionExpired = failure {
+                    UserDefaults.standard.set(false, forKey: "hasCampusSession")
+                    try? campus.invalidateSavedSession()
+                    resetSignedInState()
+                }
                 errorMessage = error.localizedDescription
             }
             guard let self, generation == id else { return }

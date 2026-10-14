@@ -16,7 +16,12 @@ struct NITechVacancyViewerApp: App {
                 .preferredColorScheme(appearance == "light" ? .light : appearance == "dark" ? .dark : nil)
                 .task { store.start() }
                 .onReceive(timer) { _ in if scenePhase == .active { store.tick() } }
-                .onChange(of: scenePhase) { phase in if phase == .active { store.tick() } }
+                .onChange(of: scenePhase) { phase in
+                    if phase == .active { store.tick() }
+                    else if phase == .background {
+                        Task { await store.saveSessionBeforeBackgrounding() }
+                    }
+                }
         }
     }
 }
