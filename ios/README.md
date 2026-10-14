@@ -19,7 +19,7 @@ Live access needs MAINS-X or the university VPN. No university credentials are i
 
 ## Open in Xcode
 
-Open `ios/NITechVacancyViewer.xcodeproj`, select the **NITechVacancyViewer** scheme, and run on an iPhone simulator. The project is checked in and can be regenerated with:
+Open `ios/NITechVacancyViewer.xcodeproj` and select the **NITechVacancyViewer** scheme. The project is checked in and can be regenerated with:
 
 ```sh
 python3 ios/scripts/generate_project.py
@@ -31,14 +31,11 @@ For an actual iPhone, select your Apple development team in **Signing & Capabili
 
 The **iOS Build** workflow runs on a macOS runner on pushes to `feat/ios-*`, `dev`, `main`, or `master`, on pull requests touching iOS files, and on manual dispatch. Forks may need Actions enabled once in the repository's **Actions** tab.
 
-It tests the HTML extractor and Foundation models, builds and tests the iOS app on an available iPhone simulator, and creates two packages in the **NITechSearch-iOS** artifact:
+It runs the HTML extractor tests and Foundation unit tests on macOS, then compiles only the iPhone/iPad device app. It does not prepare, build, or run a simulator.
 
-| File | Use |
-| --- | --- |
-| `NITechSearch-iOS-Simulator.zip` | Unzip and install the `.app` in a Mac's iOS simulator. |
-| `NITechSearch-unsigned.ipa` | Device build for signing with your own Apple certificate/profile or compatible signing tool. It cannot be installed directly while unsigned. |
+The **NITechSearch-iOS** artifact contains `NITechSearch-unsigned.ipa`. This is a device build for your sideloading tool to sign using an Apple account or certificate and provisioning profile. It cannot be installed directly while unsigned.
 
-The **iOS-TestResults** artifact contains XCTest results and an offline demo screenshot. Builds do not publish to the App Store or TestFlight.
+The **iOS-TestResults** artifact contains parser and Swift core test logs. CI does not run UI tests or verify live university access. Builds do not publish to the App Store or TestFlight.
 
 To build locally on macOS:
 
@@ -48,12 +45,7 @@ cd ios
 swift test
 ```
 
-To install the simulator build on a booted simulator:
-
-```sh
-xcrun simctl install booted NITechVacancyViewer.app
-xcrun simctl launch booted jp.nothingwillbenothing.nitechsearch
-```
+After sideloading, open NITechSearch on your device and tap **デモを試す** to check building navigation, room details, search, themes, and logout. Then connect to MAINS-X or the university VPN and verify real sign-in and reservation retrieval.
 
 ## Port details
 

@@ -8,10 +8,11 @@ Local checks completed on 2026-10-14:
 - Project regeneration produced identical bytes.
 - Resource JSON, privacy manifest XML/property list, workflow YAML, JavaScript syntax, shell syntax, and Git whitespace checks passed.
 
-Pending the macOS GitHub Actions run:
+The first macOS GitHub Actions run passed the HTML extraction tests and Swift Foundation unit tests. Simulator procedures were then removed from CI at the user's request to reduce build time.
 
-- Swift compiler/type checking and Foundation XCTest execution.
-- iOS simulator build, XCTest/UI test execution, and screenshot inspection.
-- iPhone device compilation and unsigned IPA packaging.
+Pending the device-only macOS GitHub Actions run:
+
+- iPhone/iPad app compiler/type checking and unsigned IPA packaging.
+- Runtime/UI testing after sideloading on a physical device (not run in CI).
 
 Live NITech authentication and Campus Square parsing need MAINS-X or the university VPN and an account. No live credentials were available during this conversion.

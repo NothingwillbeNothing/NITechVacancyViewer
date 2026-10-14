@@ -18,61 +18,36 @@ concurrency:
 jobs:
   build:
     runs-on: macos-15
-    timeout-minutes: 35
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Xcode version
         run: xcodebuild -version
       - name: Generate project
-        run: python3 ios/scripts/generate_project.py
+        run: |
+          python3 ios/scripts/generate_project.py
+          mkdir -p ios/build
       - name: Reservation HTML extraction tests
         working-directory: ios/Tests
-        run: npm ci --ignore-scripts && npm test
+        run: |
+          npm ci --ignore-scripts
+          npm test 2>&1 | tee ../build/html-tests.log
       - name: Core unit tests
         working-directory: ios
-        run: swift test
-      - name: Select available iPhone simulator
-        run: |
-          python3 - <<'PY'
-          import json, os, subprocess
-          devices = json.loads(subprocess.check_output(['xcrun', 'simctl', 'list', 'devices', 'available', '-j']))['devices']
-          candidates = [(runtime, d) for runtime, group in devices.items() if '.iOS-' in runtime for d in group if d.get('isAvailable') and 'iPhone' in d['name']]
-          if not candidates:
-              raise SystemExit('No available iPhone simulator')
-          runtime, device = sorted(candidates, key=lambda pair: (pair[0], pair[1]['name']))[-1]
-          with open(os.environ['GITHUB_ENV'], 'a') as output:
-              output.write('IOS_SIMULATOR_ID=' + device['udid'] + '\n')
-          print(device['name'], runtime)
-          PY
-      - name: Simulator unit and UI tests
-        working-directory: ios
-        run: |
-          mkdir -p build
-          xcodebuild -project NITechVacancyViewer.xcodeproj -scheme NITechVacancyViewer \
-            -destination "platform=iOS Simulator,id=$IOS_SIMULATOR_ID" \
-            -derivedDataPath build/tests -resultBundlePath build/TestResults.xcresult \
-            CODE_SIGNING_ALLOWED=NO test
-      - name: Build simulator and unsigned device packages
+        run: swift test 2>&1 | tee build/core-tests.log
+      - name: Build unsigned device IPA
         run: bash ios/scripts/build.sh
-      - name: Export test screenshots
-        if: always()
-        run: |
-          if [ -d ios/build/TestResults.xcresult ]; then
-            xcrun xcresulttool export attachments --path ios/build/TestResults.xcresult --output-path ios/build/Screenshots
-          fi
       - name: Upload iOS packages
         uses: actions/upload-artifact@v4
         with:
           name: NITechSearch-iOS
-          path: ios/build/artifacts/*
+          path: ios/build/artifacts/NITechSearch-unsigned.ipa
           if-no-files-found: error
           retention-days: 30
-      - name: Upload test results and screenshots
+      - name: Upload test logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: iOS-TestResults
-          path: |
-            ios/build/TestResults.xcresult
-            ios/build/Screenshots
+          path: ios/build/*tests.log
           retention-days: 14
