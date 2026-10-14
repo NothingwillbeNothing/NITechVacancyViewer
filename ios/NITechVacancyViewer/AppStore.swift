@@ -10,11 +10,9 @@ final class AppStore: ObservableObject {
     @Published private(set) var now = Date()
     @Published var errorMessage: String?
     @Published private(set) var buildings: [Building] = []
-    private let credentials = CredentialStore()
+    private let legacyCredentials = CredentialStore()
     private let cache = ScheduleCache()
-    private let campus = CampusSquareService()
-    private let auth = AuthenticationService()
-    private var token: String?
+    let campus = CampusSquareService()
     private var operation: Task<Void, Never>?
     private var generation = UUID()
     private var demoTemplate: [Room] = []
@@ -29,56 +27,49 @@ final class AppStore: ObservableObject {
     var rooms: [Room] { snapshot?.rooms(on: now) ?? [] }
     var hasTodayData: Bool { snapshot?.rooms(on: now) != nil }
     var minute: Int { CampusClock.minute(now) }
-
     func room(named name: String) -> Room? { rooms.first { $0.name == name } }
 
     func start() {
         guard !isReady else { return }
-        defer { isReady = true }
-        do {
-            if let saved = try credentials.load() {
-                isSignedIn = true
-                snapshot = cache.load()
-                beginSignIn(saved, remember: nil)
-            }
-        } catch { report(error) }
-    }
-
-    func signIn(username: String, password: String, remember: Bool) {
-        let username = username.trimmingCharacters(in: .whitespacesAndNewlines)
-        if username == "demoMode" && password == "demoMode" { enterDemo(); return }
-        guard !username.isEmpty, !password.isEmpty,
-              !username.contains("\n"), !username.contains("\r"),
-              !password.contains("\n"), !password.contains("\r") else {
-            errorMessage = "基盤IDとパスワードを入力してください。"
-            return
+        isReady = true
+        // The new portal owns authentication. Remove passwords saved by 1.0;
+        // new sessions use only the portal's browser cookie store.
+        try? legacyCredentials.clear()
+        let remember = UserDefaults.standard.object(forKey: "rememberCampusSession") as? Bool ?? true
+        campus.configureSession(remember: remember)
+        if UserDefaults.standard.bool(forKey: "hasCampusSession") {
+            snapshot = cache.load()
+            isSignedIn = snapshot?.rooms(on: now) != nil
+            loadPortal(interactive: false)
         }
-        beginSignIn(Credentials(username: username, password: password), remember: remember)
     }
 
-    private func beginSignIn(_ value: Credentials, remember: Bool?) {
+    func signIn(remember: Bool) {
+        campus.configureSession(remember: remember)
+        UserDefaults.standard.set(remember, forKey: "rememberCampusSession")
+        loadPortal(interactive: true)
+    }
+
+    private func loadPortal(interactive: Bool) {
         beginOperation { [weak self] id in
             guard let self else { return }
-            let acquired = try await auth.signIn(value)
+            let result = try await campus.fetch(interactive: interactive)
             try Task.checkCancellation()
             guard generation == id else { return }
-            if let remember {
-                if remember { try credentials.save(value) }
-                else { try credentials.clear() }
-            }
-            token = acquired
+            try cache.save(result)
+            snapshot = result
+            now = Date()
             isSignedIn = true
             isDemo = false
-            let result = try await campus.fetch(token: acquired)
-            try Task.checkCancellation()
-            guard generation == id else { return }
-            try accept(result)
+            UserDefaults.standard.set(
+                UserDefaults.standard.object(forKey: "rememberCampusSession") as? Bool ?? true,
+                forKey: "hasCampusSession"
+            )
         }
     }
 
     func enterDemo() {
         stopOperation()
-        token = nil
         isDemo = true
         isSignedIn = true
         errorMessage = nil
@@ -90,20 +81,7 @@ final class AppStore: ObservableObject {
         now = Date()
         if isDemo { snapshot = makeDemo(); return }
         guard !isLoading else { return }
-        if let token {
-            beginOperation { [weak self] id in
-                guard let self else { return }
-                let result = try await campus.fetch(token: token)
-                try Task.checkCancellation()
-                guard generation == id else { return }
-                try accept(result)
-            }
-        } else {
-            do {
-                if let saved = try credentials.load() { beginSignIn(saved, remember: nil) }
-                else { isSignedIn = false }
-            } catch { report(error) }
-        }
+        loadPortal(interactive: false)
     }
 
     func refreshAndWait() async {
@@ -111,7 +89,6 @@ final class AppStore: ObservableObject {
         await operation?.value
     }
 
-    /// Re-evaluate vacancy each minute; the reservation fetch time stays honest.
     func tick() {
         let oldDay = CampusClock.dayKey(now)
         now = Date()
@@ -121,26 +98,27 @@ final class AppStore: ObservableObject {
     }
 
     func signOut() {
-        stopOperation()
-        // Demo data never uses the credential store or persistent schedule.
-        // Exiting it must work even when Keychain access is unavailable.
-        if !isDemo {
-            do {
-                try credentials.clear()
-                try cache.clear()
-            } catch { report(error); return }
+        if isDemo {
+            stopOperation()
+            resetSignedInState()
+            return
         }
-        token = nil
+        beginOperation { [weak self] id in
+            guard let self else { return }
+            await campus.clearSession()
+            guard generation == id else { return }
+            try cache.clear()
+            try? legacyCredentials.clear()
+            UserDefaults.standard.set(false, forKey: "hasCampusSession")
+            resetSignedInState()
+        }
+    }
+
+    private func resetSignedInState() {
         snapshot = nil
         isDemo = false
         isSignedIn = false
         errorMessage = nil
-    }
-
-    private func accept(_ value: ScheduleSnapshot) throws {
-        try cache.save(value)
-        snapshot = value
-        now = Date()
     }
 
     private func makeDemo() -> ScheduleSnapshot {
@@ -167,21 +145,12 @@ final class AppStore: ObservableObject {
             catch is CancellationError { }
             catch {
                 guard let self, generation == id else { return }
-                if let failure = error as? ViewerError,
-                   case .invalidCredentials = failure { token = nil; isSignedIn = false }
-                report(error)
+                errorMessage = error.localizedDescription
             }
             guard let self, generation == id else { return }
             isLoading = false
             operation = nil
         }
-    }
-
-    private func report(_ error: Error) {
-        if let error = error as? URLError {
-            errorMessage = error.code == .timedOut ? ViewerError.timeout.localizedDescription
-                : "通信できませんでした。MAINS-Xまたは大学VPNへの接続を確認してください。"
-        } else { errorMessage = error.localizedDescription }
     }
 
     private static func resource<T: Decodable>(_ name: String, as type: T.Type) throws -> T {

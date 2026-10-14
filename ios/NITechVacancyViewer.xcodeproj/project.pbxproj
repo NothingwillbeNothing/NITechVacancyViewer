@@ -17,6 +17,18 @@
 			"path" = "NITechVacancyViewer/Core/Models.swift";
 			"sourceTree" = "<group>";
 		};
+		"D60B3DBFC53E249C401F6CAC" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "NITechVacancyViewer/Core/NetworkFailure.swift";
+			"sourceTree" = "<group>";
+		};
+		"9DE40F9A0F047B2AFF2F3821" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "NITechVacancyViewer/Core/PortalConfiguration.swift";
+			"sourceTree" = "<group>";
+		};
 		"C4DBF19C06AB1D1FC1C52E16" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -27,12 +39,6 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "NITechVacancyViewer/NITechVacancyViewerApp.swift";
-			"sourceTree" = "<group>";
-		};
-		"3E6EEBD37E5D25207DCD2AE5" = {
-			"isa" = "PBXFileReference";
-			"lastKnownFileType" = "sourcecode.swift";
-			"path" = "NITechVacancyViewer/Services/AuthenticationService.swift";
 			"sourceTree" = "<group>";
 		};
 		"33D4A5012E447AD2B94DC9AC" = {
@@ -57,6 +63,12 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "NITechVacancyViewer/Views/BuildingsView.swift";
+			"sourceTree" = "<group>";
+		};
+		"16BBF75702EFDEDA01EFEF30" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "NITechVacancyViewer/Views/CampusWebViewHost.swift";
 			"sourceTree" = "<group>";
 		};
 		"829545A3B1097FF844085E81" = {
@@ -184,6 +196,14 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "4D7740E49744823F0C4E775E";
 		};
+		"58331C9CC66EFA186DCD1DDD" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "D60B3DBFC53E249C401F6CAC";
+		};
+		"A05DC0542A6AAF319DB3D34E" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "9DE40F9A0F047B2AFF2F3821";
+		};
 		"61A31D35368084B5456B9427" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "C4DBF19C06AB1D1FC1C52E16";
@@ -191,10 +211,6 @@
 		"3543D557CCA7EF01887CCA09" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "9A39912ED04AB735B48CF06C";
-		};
-		"8FE558F87089479E880D84CC" = {
-			"isa" = "PBXBuildFile";
-			"fileRef" = "3E6EEBD37E5D25207DCD2AE5";
 		};
 		"FFD5B573610BEF3BCBC922D4" = {
 			"isa" = "PBXBuildFile";
@@ -211,6 +227,10 @@
 		"E1E10CCA95E3AF6A2D07C645" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "F80EC1855AA21E350F0F111D";
+		};
+		"27E57F8EA0457A45F1DF7C37" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "16BBF75702EFDEDA01EFEF30";
 		};
 		"9C4661DC2E9321FE44955E3F" = {
 			"isa" = "PBXBuildFile";
@@ -234,13 +254,15 @@
 			"files" = (
 				"3F088EAE70C36B7D5D21E1FE",
 				"52574CCD9760AAA3C2CF0DD5",
+				"58331C9CC66EFA186DCD1DDD",
+				"A05DC0542A6AAF319DB3D34E",
 				"61A31D35368084B5456B9427",
 				"3543D557CCA7EF01887CCA09",
-				"8FE558F87089479E880D84CC",
 				"FFD5B573610BEF3BCBC922D4",
 				"452F8C960A0EF522165EBF9A",
 				"CF412652C6B8B0E7C086A033",
 				"E1E10CCA95E3AF6A2D07C645",
+				"27E57F8EA0457A45F1DF7C37",
 				"9C4661DC2E9321FE44955E3F",
 				"A84D27AC5574D197821899DA",
 				"27083D9530FBB3EE1E60AA3F",
@@ -299,8 +321,9 @@
 				"SWIFT_EMIT_LOC_STRINGS" = "YES";
 				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = "AccentColor";
-				"MARKETING_VERSION" = "1.0";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "1.1";
+				"CURRENT_PROJECT_VERSION" = "3";
+				"INFOPLIST_KEY_NSLocalNetworkUsageDescription" = "学内の施設予約サーバーへ接続して講義室の空室状況を取得します。";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "NITechSearch";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.education";
 				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
@@ -326,8 +349,9 @@
 				"SWIFT_EMIT_LOC_STRINGS" = "YES";
 				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = "AccentColor";
-				"MARKETING_VERSION" = "1.0";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "1.1";
+				"CURRENT_PROJECT_VERSION" = "3";
+				"INFOPLIST_KEY_NSLocalNetworkUsageDescription" = "学内の施設予約サーバーへ接続して講義室の空室状況を取得します。";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "NITechSearch";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.education";
 				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
@@ -378,6 +402,14 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "4D7740E49744823F0C4E775E";
 		};
+		"5D152F6D52A890B1D3B08053" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "D60B3DBFC53E249C401F6CAC";
+		};
+		"CF896AD8EA959B71D3E956EC" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "9DE40F9A0F047B2AFF2F3821";
+		};
 		"2DC7587D2F87CDBA71321E95" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "C4DBF19C06AB1D1FC1C52E16";
@@ -391,6 +423,8 @@
 			"buildActionMask" = 2147483647;
 			"files" = (
 				"ED068C7EE947F1771BEC7BBF",
+				"5D152F6D52A890B1D3B08053",
+				"CF896AD8EA959B71D3E956EC",
 				"2DC7587D2F87CDBA71321E95",
 				"BD9E4602144585CCCD86573F",
 			);
@@ -593,13 +627,15 @@
 			"children" = (
 				"B1703EFDFCBFE0B6EB6A0BAC",
 				"4D7740E49744823F0C4E775E",
+				"D60B3DBFC53E249C401F6CAC",
+				"9DE40F9A0F047B2AFF2F3821",
 				"C4DBF19C06AB1D1FC1C52E16",
 				"9A39912ED04AB735B48CF06C",
-				"3E6EEBD37E5D25207DCD2AE5",
 				"33D4A5012E447AD2B94DC9AC",
 				"C43CE82889147669151D8BA2",
 				"F82715D1EE34AA5239795E70",
 				"F80EC1855AA21E350F0F111D",
+				"16BBF75702EFDEDA01EFEF30",
 				"829545A3B1097FF844085E81",
 				"76F07554F8F2F95ECF011089",
 				"2A5295CC749EBC891A3F7053",

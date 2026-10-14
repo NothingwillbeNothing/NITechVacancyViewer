@@ -14,7 +14,13 @@ The first device-only run passed all five HTML extraction tests and all eleven S
 
 https://github.com/NothingwillbeNothing/NITechVacancyViewer/actions/runs/38515673701
 
-Pending the final device-only run after the demo-exit correction:
+The demo-exit correction also compiled and passed the device-only workflow:
+
+https://github.com/NothingwillbeNothing/NITechVacancyViewer/actions/runs/38515995932
+
+The user installed version 1.0 and confirmed the app opens and authenticates, but reported a connection failure while fetching reservations on MAINS-X. They supplied the current portal URL, which changed in August. Version 1.1 switches to that URL and interactive university/Microsoft browser authentication, adds URL/redirect and diagnostic tests, and retains the device-only CI workflow.
+
+Pending the version-1.1 device-only run:
 
 - iPhone/iPad app compiler/type checking and unsigned IPA packaging.
 - Runtime/UI testing after sideloading on a physical device (not run in CI).

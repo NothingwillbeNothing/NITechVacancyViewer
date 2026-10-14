@@ -2,20 +2,22 @@
 
 A native SwiftUI port of [Punyo/NITechVacancyViewer](https://github.com/Punyo/NITechVacancyViewer), based on upstream commit `2c77f383ac800c5e115f1809daf69c3240aba44a`.
 
-Requires iOS 16 or later. Works on iPhone and iPad. No third-party runtime dependencies.
+Requires iOS 16 or later. Works on iPhone and iPad. No third-party runtime dependencies. Version 1.1 uses the current portal URL supplied by the user:
+
+https://aprkyomu-nitechict.msappproxy.net/campusweb/campusportal.do?page=main&tabId=kh
 
 ## Features
 
 - The original seven buildings and their lecture rooms, with the original building photos and icon.
 - Current vacancy, current reservations, next reservation time, and room reservation details.
 - A searchable room list with an optional vacant-only filter.
-- NITech foundation ID sign-in through the same OpenAM endpoint as Android, including time for the university MFA prompt.
-- An authenticated `WKWebView` that follows the Campus Square main menu, facility flow, and week view.
+- Interactive sign-in on the university's own portal, including its university/Microsoft authentication redirects and MFA prompts.
+- An authenticated `WKWebView` that follows the Campus Square portal, facility flow, and week view. Old absolute campus links are translated to the new proxy host.
 - A protected local reservation cache, pull-to-refresh, and vacancy recalculation every 60 seconds while active.
-- Optional credential saving in the iOS Keychain, system/light/dark themes, and logout cleanup.
-- A clearly marked demo using the original bundled sample data. Tap **デモを試す** or use `demoMode` for both ID and password.
+- Optional browser-session persistence, system/light/dark themes, and logout cleanup.
+- A clearly marked demo using the original bundled sample data. Tap **デモを試す**.
 
-Live access needs MAINS-X or the university VPN. No university credentials are included. Live authentication and reservation retrieval must be verified on that network; CI exercises the offline demo and parser logic.
+No university credentials are included. The app does not collect or save a password in its native form. Live access follows the university's current portal and access policies. Live authentication and reservation retrieval must be verified on the user's device; CI tests parsing, date/time behavior, allowed authentication hosts, URL rewriting, and network-error handling.
 
 ## Open in Xcode
 
@@ -45,7 +47,7 @@ cd ios
 swift test
 ```
 
-After sideloading, open NITechSearch on your device and tap **デモを試す** to check building navigation, room details, search, themes, and logout. Then connect to MAINS-X or the university VPN and verify real sign-in and reservation retrieval.
+After sideloading, open NITechSearch on your device and tap **デモを試す** to check building navigation, room details, search, themes, and logout. Then tap **大学アカウントでログイン** and complete the university's authentication screen. If the portal menu changed, open **施設利用状況参照** in that screen; the app returns to its native interface after reading the reservation tables.
 
 ## Port details
 
@@ -55,6 +57,8 @@ The reservation extractor uses the upstream HTML selectors (`kyuko-shisetsu-nofi
 
 Reservation fetch timestamps show when data was actually fetched. The 60-second update recalculates status from the cached schedule; it does not claim a new network fetch. Pull-to-refresh fetches a fresh reservation table. Automatic iOS background polling is not used.
 
-Credentials go only to the university authentication host over HTTPS. Authentication redirects are rejected to avoid forwarding credential headers. The SSO token remains in memory, and Campus Square uses a nonpersistent cookie store. The optional password is stored in a device-only, unlocked-only Keychain item; the reservation cache is file-protected and excluded from backups. No analytics or advertising SDKs are included.
+Login occurs in the university's actual browser pages over HTTPS. The native OpenAM username/password API used by version 1.0 has been removed; its token is not forwarded to the new application-proxy host. The app permits the configured campus host and known university/Microsoft authentication hosts, displays the current login hostname, and waits for the real authentication redirects. When **この端末でログイン状態を保持** is enabled, the app uses its persistent WebKit cookie store; otherwise it uses an in-memory store for the current session. Logout clears the app's browser data and reservation cache. Legacy version-1.0 Keychain credentials are removed where the device's signing configuration permits. The reservation cache is file-protected and excluded from backups. No analytics or advertising SDKs are included.
+
+The loading WebView is attached to the app's window even when invisible. Cancelled or superseded navigation is ignored, while actual failures report the request stage, framework error code, and hostname without exposing URL queries or authentication data. TLS certificate validation remains enabled.
 
 The linked original terms/privacy pages are retained for attribution; an independent distribution should provide policies appropriate to its own operation. The upstream repository has no license file at the referenced commit; this port does not assign a license to upstream code or assets.

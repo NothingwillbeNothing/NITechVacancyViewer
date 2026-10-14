@@ -2,11 +2,7 @@ import SwiftUI
 
 struct SignInView: View {
     @EnvironmentObject private var store: AppStore
-    @State private var username = ""
-    @State private var password = ""
-    @State private var remember = true
-    @FocusState private var focus: Field?
-    private enum Field: Hashable { case username, password }
+    @State private var remember = UserDefaults.standard.object(forKey: "rememberCampusSession") as? Bool ?? true
 
     var body: some View {
         NavigationStack {
@@ -20,25 +16,10 @@ struct SignInView: View {
                             .font(.title3).foregroundStyle(.secondary)
                     }.padding(.top, 32)
 
-                    VStack(alignment: .leading, spacing: 16) {
-                        TextField("基盤ID（@ict.nitech.ac.jpなし）", text: $username)
-                            .textContentType(.username)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .keyboardType(.asciiCapable)
-                            .submitLabel(.next)
-                            .focused($focus, equals: .username)
-                            .onSubmit { focus = .password }
-                        SecureField("パスワード", text: $password)
-                            .textContentType(.password)
-                            .submitLabel(.go)
-                            .focused($focus, equals: .password)
-                            .onSubmit { login() }
-                        Toggle("認証情報をこの端末に保存", isOn: $remember)
-                            .font(.subheadline)
-                    }
-                    .textFieldStyle(.roundedBorder)
-                    .disabled(store.isLoading)
+                    Text("大学のログイン画面で認証すると、施設の予約状況を読み込みます。")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    Toggle("この端末でログイン状態を保持", isOn: $remember)
+                        .font(.subheadline).disabled(store.isLoading)
 
                     if let message = store.errorMessage {
                         Label(message, systemImage: "exclamationmark.triangle")
@@ -46,24 +27,22 @@ struct SignInView: View {
                             .accessibilityIdentifier("signInError")
                     }
 
-                    Button(action: login) {
+                    Button { store.signIn(remember: remember) } label: {
                         HStack {
                             if store.isLoading { ProgressView().tint(.white) }
-                            Text(store.isLoading ? "ログインしています…" : "ログイン")
+                            Text(store.isLoading ? "読み込んでいます…" : "大学アカウントでログイン")
                                 .fontWeight(.semibold)
                         }.frame(maxWidth: .infinity).padding(.vertical, 8)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(store.isLoading || username.isEmpty || password.isEmpty)
+                    .buttonStyle(.borderedProminent).disabled(store.isLoading)
                     .accessibilityIdentifier("signInButton")
 
-                    Text("MAINS-X、または大学VPNへの接続が必要です。認証要求が届いた場合は承認してください。")
-                        .font(.footnote).foregroundStyle(.secondary)
-
-                    Button("デモを試す") { focus = nil; password = ""; store.enterDemo() }
+                    Button("デモを試す") { store.enterDemo() }
                         .frame(maxWidth: .infinity).buttonStyle(.bordered)
-                        .disabled(store.isLoading)
-                        .accessibilityIdentifier("demoButton")
+                        .disabled(store.isLoading).accessibilityIdentifier("demoButton")
+
+                    Text("新しいCampus Squareポータルに対応しています。認証要求が届いた場合は大学の案内に従って承認してください。")
+                        .font(.footnote).foregroundStyle(.secondary)
 
                     VStack(alignment: .leading, spacing: 8) {
                         Text("ログイン前に元のアプリの利用規約とプライバシーポリシーを確認してください。")
@@ -74,15 +53,8 @@ struct SignInView: View {
                         }
                     }.font(.caption).foregroundStyle(.secondary)
                 }
-                .padding(24).frame(maxWidth: 520, alignment: .leading)
-                .frame(maxWidth: .infinity)
-            }.scrollDismissesKeyboard(.interactively)
+                .padding(24).frame(maxWidth: 520, alignment: .leading).frame(maxWidth: .infinity)
+            }
         }
-    }
-
-    private func login() {
-        guard !store.isLoading else { return }
-        focus = nil
-        store.signIn(username: username, password: password, remember: remember)
     }
 }

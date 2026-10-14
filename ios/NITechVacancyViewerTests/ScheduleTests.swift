@@ -87,4 +87,60 @@ final class ScheduleTests: XCTestCase {
         let decoded = try JSONDecoder().decode(ScheduleSnapshot.self, from: JSONEncoder().encode(snapshot))
         XCTAssertEqual(decoded, snapshot)
     }
+
+    func testNavigationCancellationIsDistinguishedFromConnectionFailure() {
+        XCTAssertTrue(NetworkFailure.isCancelledNavigation(URLError(.cancelled)))
+        XCTAssertFalse(NetworkFailure.isCancelledNavigation(URLError(.cannotConnectToHost)))
+        XCTAssertFalse(NetworkFailure.isCancelledNavigation(NSError(domain: "Other", code: -999)))
+    }
+
+    func testNetworkDiagnosticContainsStageAndCodeWithoutURLQuery() {
+        let error = NSError(domain: NSURLErrorDomain, code: -1003, userInfo: [
+            NSURLErrorFailingURLStringErrorKey: "https://example.test/?token=private",
+            NSLocalizedDescriptionKey: "secret-response"
+        ])
+        let failure = NetworkFailure(error, stage: .campusMenu, host: "example.test")
+        let text = failure.localizedDescription
+        XCTAssertTrue(text.contains("Campus Square"))
+        XCTAssertTrue(text.contains("-1003"))
+        XCTAssertTrue(text.contains("example.test"))
+        XCTAssertFalse(text.contains("private"))
+        XCTAssertFalse(text.contains("secret-response"))
+    }
+
+    func testNestedURLFailureRetainsConnectionCode() {
+        let error = NSError(domain: "WebKit", code: 1, userInfo: [
+            NSUnderlyingErrorKey: URLError(.secureConnectionFailed)
+        ])
+        XCTAssertEqual(NetworkFailure(error, stage: .week, host: "example.test").code, -1200)
+    }
+
+    func testPortalUsesCurrentCampusAddress() {
+        XCTAssertEqual(PortalConfiguration.mainURL.host, "aprkyomu-nitechict.msappproxy.net")
+        XCTAssertEqual(PortalConfiguration.mainURL.path, "/campusweb/campusportal.do")
+        XCTAssertTrue(PortalConfiguration.mainURL.query?.contains("tabId=kh") == true)
+    }
+
+    func testLegacyCampusLinksAreRebasedWithoutChangingFlow() {
+        let url = URL(string: "https://rpxkyomu.ict.nitech.ac.jp/campusweb/campussquare.do?flowExecutionKey=e1s2&mode=week")!
+        let result = PortalConfiguration.campusURL(url)
+        XCTAssertEqual(result?.host, PortalConfiguration.host)
+        XCTAssertEqual(result?.path, url.path)
+        XCTAssertEqual(result?.query, url.query)
+    }
+
+    func testAuthenticationHostAllowlistRejectsLookalikes() {
+        for host in [PortalConfiguration.host, "login.microsoftonline.com", "slb4oam.ict.nitech.ac.jp"] {
+            XCTAssertTrue(PortalConfiguration.isAllowedNavigation(URL(string: "https://\(host)/")!))
+        }
+        for host in ["login.microsoftonline.com.evil.test", "other.msappproxy.net", "nitech.ac.jp.evil.test"] {
+            XCTAssertFalse(PortalConfiguration.isAllowedNavigation(URL(string: "https://\(host)/")!))
+        }
+        XCTAssertFalse(PortalConfiguration.isAllowedNavigation(URL(string: "http://login.microsoftonline.com/")!))
+    }
+
+    func testAuthenticationURLsAreNotRewrittenToCampusHost() {
+        XCTAssertNil(PortalConfiguration.campusURL(URL(string: "https://login.microsoftonline.com/authorize")!))
+        XCTAssertNil(PortalConfiguration.campusURL(URL(string: "http://rpxkyomu.ict.nitech.ac.jp/campusweb/")!))
+    }
 }

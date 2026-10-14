@@ -41,5 +41,8 @@ private struct RootView: View {
                 SignInView()
             }
         }
+        .overlay(alignment: .topLeading) {
+            CampusSessionPresenter(service: store.campus)
+        }
     }
 }

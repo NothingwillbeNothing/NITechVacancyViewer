@@ -4,6 +4,10 @@ struct SettingsView: View {
     @EnvironmentObject private var store: AppStore
     @AppStorage("appearance") private var appearance = "system"
     @State private var confirmSignOut = false
+    private var version: String {
+        let info = Bundle.main.infoDictionary ?? [:]
+        return "\(info["CFBundleShortVersionString"] as? String ?? "1.0") (\(info["CFBundleVersion"] as? String ?? "1"))"
+    }
 
     var body: some View {
         Form {
@@ -18,7 +22,7 @@ struct SettingsView: View {
                 }
             }
             Section("アプリについて") {
-                LabeledContent("バージョン", value: "1.0 (iOS)")
+                LabeledContent("バージョン", value: version)
                 Link("元のAndroidアプリ", destination: URL(string: "https://github.com/Punyo/NITechVacancyViewer")!)
                 Link("iOS版ソースコード", destination: URL(string: "https://github.com/NothingwillbeNothing/NITechVacancyViewer")!)
                 Link("利用規約", destination: URL(string: "https://punyo.github.io/legal/tos.html")!)
