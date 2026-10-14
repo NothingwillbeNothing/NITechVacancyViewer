@@ -20,9 +20,12 @@ https://github.com/NothingwillbeNothing/NITechVacancyViewer/actions/runs/3851599
 
 The user installed version 1.0 and confirmed the app opens and authenticates, but reported a connection failure while fetching reservations on MAINS-X. They supplied the current portal URL, which changed in August. Version 1.1 switches to that URL and interactive university/Microsoft browser authentication, adds URL/redirect and diagnostic tests, and retains the device-only CI workflow.
 
-Pending the version-1.1 device-only run:
+Version 1.1 (build 3) passed the device-only workflow with five HTML extraction tests and eighteen Swift core tests. Xcode compiled the device app, validated the IPA, and uploaded the package:
 
-- iPhone/iPad app compiler/type checking and unsigned IPA packaging.
-- Runtime/UI testing after sideloading on a physical device (not run in CI).
+https://github.com/NothingwillbeNothing/NITechVacancyViewer/actions/runs/38518072599
+
+The downloaded IPA was independently checked for version 1.1/build 3, an arm64 iPhoneOS executable, iOS 16 minimum, and unsigned packaging.
+
+Live university/Microsoft authentication and reservation retrieval with the new portal still require confirmation on the user's device. CI does not exercise protected university pages or run UI tests.
 
 Live NITech authentication and Campus Square parsing need MAINS-X or the university VPN and an account. No live credentials were available during this conversion.
