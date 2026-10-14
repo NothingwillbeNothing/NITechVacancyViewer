@@ -29,7 +29,7 @@ struct SettingsView: View {
             Section {
                 Button(store.isDemo ? "デモを終了" : "ログアウト", role: .destructive) { confirmSignOut = true }
             } footer: {
-                Text("ログアウトすると、この端末に保存した認証情報と予約データを削除します。")
+                Text(store.isDemo ? "デモを終了するとログイン画面に戻ります。" : "ログアウトすると、この端末に保存した認証情報と予約データを削除します。")
             }
         }
         .navigationTitle("設定")

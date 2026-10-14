@@ -122,10 +122,14 @@ final class AppStore: ObservableObject {
 
     func signOut() {
         stopOperation()
-        do {
-            try credentials.clear()
-            try cache.clear()
-        } catch { report(error); return }
+        // Demo data never uses the credential store or persistent schedule.
+        // Exiting it must work even when Keychain access is unavailable.
+        if !isDemo {
+            do {
+                try credentials.clear()
+                try cache.clear()
+            } catch { report(error); return }
+        }
         token = nil
         snapshot = nil
         isDemo = false
