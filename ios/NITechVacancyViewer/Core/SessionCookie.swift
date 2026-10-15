@@ -10,7 +10,6 @@ struct SessionCookie: Codable {
     let expires: Date?
     let secure: Bool
     let httpOnly: Bool
-    let version: Int
     let sessionOnly: Bool
     let sameSite: String?
 
@@ -22,7 +21,6 @@ struct SessionCookie: Codable {
         expires = cookie.expiresDate
         secure = cookie.isSecure
         httpOnly = cookie.isHTTPOnly
-        version = cookie.version
         sessionOnly = cookie.isSessionOnly
         sameSite = cookie.properties?[HTTPCookiePropertyKey("SameSite")] as? String
     }
@@ -32,8 +30,10 @@ struct SessionCookie: Codable {
               expires.map({ $0 > now }) ?? true else { return nil }
         var properties: [HTTPCookiePropertyKey: Any] = [
             .name: name, .value: value, .domain: domain, .path: path,
-            .version: String(version), .discard: sessionOnly ? "TRUE" : "FALSE"
+            .discard: sessionOnly ? "TRUE" : "FALSE"
         ]
+        // Let Foundation use its default cookie version: explicitly supplying
+        // Version can make Darwin ignore Expires for Max-Age/version-1 cookies.
         if secure { properties[.secure] = "TRUE" }
         if httpOnly { properties[HTTPCookiePropertyKey("HttpOnly")] = "TRUE" }
         if let expires { properties[.expires] = expires }
