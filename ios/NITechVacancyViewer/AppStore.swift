@@ -33,7 +33,7 @@ final class AppStore: ObservableObject {
         guard !isReady else { return }
         isReady = true
         // The new portal owns authentication. Remove passwords saved by 1.0;
-        // new sessions use only the portal's browser cookie store.
+        // new sessions use the portal's cookies and their device-only archive.
         try? legacyCredentials.clear()
         let remember = UserDefaults.standard.object(forKey: "rememberCampusSession") as? Bool ?? true
         if remember && UserDefaults.standard.bool(forKey: "hasCampusSession") {
@@ -110,12 +110,16 @@ final class AppStore: ObservableObject {
         }
         beginOperation { [weak self] id in
             guard let self else { return }
-            try await campus.clearSession()
+            var cleanupError: Error?
+            do { try await campus.clearSession() }
+            catch { cleanupError = error }
             guard generation == id else { return }
-            try cache.clear()
+            do { try cache.clear() }
+            catch { if cleanupError == nil { cleanupError = error } }
             try? legacyCredentials.clear()
             UserDefaults.standard.set(false, forKey: "hasCampusSession")
             resetSignedInState()
+            if let cleanupError { throw cleanupError }
         }
     }
 
@@ -150,10 +154,14 @@ final class AppStore: ObservableObject {
             catch is CancellationError { }
             catch {
                 guard let self, generation == id else { return }
-                if let failure = error as? ViewerError, case .sessionExpired = failure {
-                    UserDefaults.standard.set(false, forKey: "hasCampusSession")
-                    try? campus.invalidateSavedSession()
-                    resetSignedInState()
+                if let failure = error as? ViewerError {
+                    switch failure {
+                    case .sessionExpired, .sessionStorage:
+                        UserDefaults.standard.set(false, forKey: "hasCampusSession")
+                        try? campus.invalidateSavedSession()
+                        resetSignedInState()
+                    default: break
+                    }
                 }
                 errorMessage = error.localizedDescription
             }

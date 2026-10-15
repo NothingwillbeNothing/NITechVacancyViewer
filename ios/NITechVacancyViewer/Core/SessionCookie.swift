@@ -30,10 +30,10 @@ struct SessionCookie: Codable {
               expires.map({ $0 > now }) ?? true else { return nil }
         var properties: [HTTPCookiePropertyKey: Any] = [
             .name: name, .value: value, .domain: domain, .path: path,
-            .discard: sessionOnly ? "TRUE" : "FALSE"
+            .discard: sessionOnly
         ]
-        // Let Foundation use its default cookie version: explicitly supplying
-        // Version can make Darwin ignore Expires for Max-Age/version-1 cookies.
+        // Darwin expects Discard as a Boolean. A nonempty string such as "FALSE"
+        // can discard the expiry, so preserve the native type used by WebKit.
         if secure { properties[.secure] = "TRUE" }
         if httpOnly { properties[HTTPCookiePropertyKey("HttpOnly")] = "TRUE" }
         if let expires { properties[.expires] = expires }
