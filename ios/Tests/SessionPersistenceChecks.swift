@@ -70,6 +70,11 @@ struct SessionPersistenceChecks {
         print("PASS: verified session cookie is saved")
 
         let secondData = WKWebsiteDataStore.nonPersistent()
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = secondData
+        let browser = WKWebView(frame: .zero, configuration: configuration)
+        browser.loadHTMLString("<html><body>Cookie store checks</body></html>", baseURL: nil)
+        defer { browser.stopLoading() }
         let second = CampusSessionPersistence(store: archive)
         try await second.restore(into: secondData.httpCookieStore)
         let restored = await allCookies(secondData.httpCookieStore)
