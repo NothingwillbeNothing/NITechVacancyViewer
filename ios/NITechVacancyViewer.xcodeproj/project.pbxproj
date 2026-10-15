@@ -35,10 +35,22 @@
 			"path" = "NITechVacancyViewer/Core/ScheduleDecoder.swift";
 			"sourceTree" = "<group>";
 		};
+		"C718C242040BF0FB6DF6D01F" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "NITechVacancyViewer/Core/SessionCookie.swift";
+			"sourceTree" = "<group>";
+		};
 		"9A39912ED04AB735B48CF06C" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "NITechVacancyViewer/NITechVacancyViewerApp.swift";
+			"sourceTree" = "<group>";
+		};
+		"A3CB47EE1CCB99A1AFB84CD7" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "NITechVacancyViewer/Services/CampusSessionStore.swift";
 			"sourceTree" = "<group>";
 		};
 		"33D4A5012E447AD2B94DC9AC" = {
@@ -99,6 +111,12 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "NITechVacancyViewerTests/ScheduleTests.swift";
+			"sourceTree" = "<group>";
+		};
+		"032F0B062EA1B9003712D758" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "NITechVacancyViewerTests/SessionCookieTests.swift";
 			"sourceTree" = "<group>";
 		};
 		"ED9A16A2713B76BB0869132F" = {
@@ -208,9 +226,17 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "C4DBF19C06AB1D1FC1C52E16";
 		};
+		"0001067507A6E1539B408512" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "C718C242040BF0FB6DF6D01F";
+		};
 		"3543D557CCA7EF01887CCA09" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "9A39912ED04AB735B48CF06C";
+		};
+		"9168C686492F452BEB730199" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "A3CB47EE1CCB99A1AFB84CD7";
 		};
 		"FFD5B573610BEF3BCBC922D4" = {
 			"isa" = "PBXBuildFile";
@@ -257,7 +283,9 @@
 				"58331C9CC66EFA186DCD1DDD",
 				"A05DC0542A6AAF319DB3D34E",
 				"61A31D35368084B5456B9427",
+				"0001067507A6E1539B408512",
 				"3543D557CCA7EF01887CCA09",
+				"9168C686492F452BEB730199",
 				"FFD5B573610BEF3BCBC922D4",
 				"452F8C960A0EF522165EBF9A",
 				"CF412652C6B8B0E7C086A033",
@@ -321,8 +349,8 @@
 				"SWIFT_EMIT_LOC_STRINGS" = "YES";
 				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = "AccentColor";
-				"MARKETING_VERSION" = "1.1";
-				"CURRENT_PROJECT_VERSION" = "3";
+				"MARKETING_VERSION" = "1.2";
+				"CURRENT_PROJECT_VERSION" = "4";
 				"INFOPLIST_KEY_NSLocalNetworkUsageDescription" = "学内の施設予約サーバーへ接続して講義室の空室状況を取得します。";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "NITechSearch";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.education";
@@ -349,8 +377,8 @@
 				"SWIFT_EMIT_LOC_STRINGS" = "YES";
 				"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = "AccentColor";
-				"MARKETING_VERSION" = "1.1";
-				"CURRENT_PROJECT_VERSION" = "3";
+				"MARKETING_VERSION" = "1.2";
+				"CURRENT_PROJECT_VERSION" = "4";
 				"INFOPLIST_KEY_NSLocalNetworkUsageDescription" = "学内の施設予約サーバーへ接続して講義室の空室状況を取得します。";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "NITechSearch";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.education";
@@ -414,9 +442,17 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "C4DBF19C06AB1D1FC1C52E16";
 		};
+		"0AA13DF642A3AE9CBB29E139" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "C718C242040BF0FB6DF6D01F";
+		};
 		"BD9E4602144585CCCD86573F" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "681385E707A2E9D7FB7DA79D";
+		};
+		"D7F3C92412B826809BCD2CF2" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "032F0B062EA1B9003712D758";
 		};
 		"703BA497C49A2ED0A18FC793" = {
 			"isa" = "PBXSourcesBuildPhase";
@@ -426,7 +462,9 @@
 				"5D152F6D52A890B1D3B08053",
 				"CF896AD8EA959B71D3E956EC",
 				"2DC7587D2F87CDBA71321E95",
+				"0AA13DF642A3AE9CBB29E139",
 				"BD9E4602144585CCCD86573F",
+				"D7F3C92412B826809BCD2CF2",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -630,7 +668,9 @@
 				"D60B3DBFC53E249C401F6CAC",
 				"9DE40F9A0F047B2AFF2F3821",
 				"C4DBF19C06AB1D1FC1C52E16",
+				"C718C242040BF0FB6DF6D01F",
 				"9A39912ED04AB735B48CF06C",
+				"A3CB47EE1CCB99A1AFB84CD7",
 				"33D4A5012E447AD2B94DC9AC",
 				"C43CE82889147669151D8BA2",
 				"F82715D1EE34AA5239795E70",
@@ -641,6 +681,7 @@
 				"2A5295CC749EBC891A3F7053",
 				"966B321BF0319E94685EF8E0",
 				"681385E707A2E9D7FB7DA79D",
+				"032F0B062EA1B9003712D758",
 				"ED9A16A2713B76BB0869132F",
 				"712C3FB395F1A5605E23BEB3",
 				"A529EA7FC58297313989689A",

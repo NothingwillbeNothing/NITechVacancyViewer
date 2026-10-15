@@ -76,7 +76,7 @@ for name, sources, product_type in (
     for mode in ("Debug", "Release"):
         settings = dict(PRODUCT_NAME="$(TARGET_NAME)", PRODUCT_BUNDLE_IDENTIFIER="jp.nothingwillbenothing.nitechsearch" + ("" if is_app else "." + name.lower()), CODE_SIGN_STYLE="Automatic", GENERATE_INFOPLIST_FILE="YES", SUPPORTED_PLATFORMS="iphoneos iphonesimulator", SWIFT_EMIT_LOC_STRINGS="YES")
         if is_app:
-            settings.update(ASSETCATALOG_COMPILER_APPICON_NAME="AppIcon", ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME="AccentColor", MARKETING_VERSION="1.1", CURRENT_PROJECT_VERSION="3", INFOPLIST_KEY_NSLocalNetworkUsageDescription="学内の施設予約サーバーへ接続して講義室の空室状況を取得します。", INFOPLIST_KEY_CFBundleDisplayName="NITechSearch", INFOPLIST_KEY_LSApplicationCategoryType="public.app-category.education", INFOPLIST_KEY_UILaunchScreen_Generation="YES", INFOPLIST_KEY_UIApplicationSceneManifest_Generation="YES", INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents="YES", INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone="UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight", INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad="UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight", LD_RUNPATH_SEARCH_PATHS=["$(inherited)", "@executable_path/Frameworks"])
+            settings.update(ASSETCATALOG_COMPILER_APPICON_NAME="AppIcon", ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME="AccentColor", MARKETING_VERSION="1.2", CURRENT_PROJECT_VERSION="4", INFOPLIST_KEY_NSLocalNetworkUsageDescription="学内の施設予約サーバーへ接続して講義室の空室状況を取得します。", INFOPLIST_KEY_CFBundleDisplayName="NITechSearch", INFOPLIST_KEY_LSApplicationCategoryType="public.app-category.education", INFOPLIST_KEY_UILaunchScreen_Generation="YES", INFOPLIST_KEY_UIApplicationSceneManifest_Generation="YES", INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents="YES", INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone="UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight", INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad="UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight", LD_RUNPATH_SEARCH_PATHS=["$(inherited)", "@executable_path/Frameworks"])
         else:
             settings.update(LD_RUNPATH_SEARCH_PATHS=["$(inherited)", "@executable_path/Frameworks", "@loader_path/Frameworks"])
             if name == ui_name:
@@ -96,7 +96,7 @@ project = add("project", "PBXProject", attributes={"BuildIndependentTargetsInPar
 project_dir = ROOT / (app_name + ".xcodeproj")
 project_dir.mkdir(exist_ok=True)
 document = dict(archiveVersion=1, classes={}, objectVersion=56, objects=objects, rootObject=project)
-(project_dir / "project.pbxproj").write_text("// !$*UTF8*$!\n" + serialize(document) + "\n")
+(project_dir / "project.pbxproj").write_text("// !$*UTF8*$!\n" + serialize(document) + "\n", encoding="utf-8", newline="\n")
 
 scheme = ET.Element("Scheme", LastUpgradeVersion="1600", version="1.3")
 build_action = ET.SubElement(scheme, "BuildAction", parallelizeBuildables="YES", buildImplicitDependencies="YES")

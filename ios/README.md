@@ -2,7 +2,7 @@
 
 A native SwiftUI port of [Punyo/NITechVacancyViewer](https://github.com/Punyo/NITechVacancyViewer), based on upstream commit `2c77f383ac800c5e115f1809daf69c3240aba44a`.
 
-Requires iOS 16 or later. Works on iPhone and iPad. No third-party runtime dependencies. Version 1.1 uses the current portal URL supplied by the user:
+Requires iOS 16 or later. Works on iPhone and iPad. No third-party runtime dependencies. Version 1.2 retains the current portal URL supplied by the user:
 
 https://aprkyomu-nitechict.msappproxy.net/campusweb/campusportal.do?page=main&tabId=kh
 
@@ -14,7 +14,7 @@ https://aprkyomu-nitechict.msappproxy.net/campusweb/campusportal.do?page=main&ta
 - Interactive sign-in on the university's own portal, including its university/Microsoft authentication redirects and MFA prompts.
 - An authenticated `WKWebView` that follows the Campus Square portal, facility flow, and week view. Old absolute campus links are translated to the new proxy host.
 - A protected local reservation cache, pull-to-refresh, and vacancy recalculation every 60 seconds while active.
-- Optional browser-session persistence, system/light/dark themes, and logout cleanup.
+- Optional Keychain-backed browser-session persistence across app termination, expiry prompts, system/light/dark themes, and logout cleanup.
 - A clearly marked demo using the original bundled sample data. Tap **デモを試す**.
 
 No university credentials are included. The app does not collect or save a password in its native form. Live access follows the university's current portal and access policies. Live authentication and reservation retrieval must be verified on the user's device; CI tests parsing, date/time behavior, allowed authentication hosts, URL rewriting, and network-error handling.
@@ -33,11 +33,11 @@ For an actual iPhone, select your Apple development team in **Signing & Capabili
 
 The **iOS Build** workflow runs on a macOS runner on pushes to `feat/ios-*`, `dev`, `main`, or `master`, on pull requests touching iOS files, and on manual dispatch. Forks may need Actions enabled once in the repository's **Actions** tab.
 
-It runs the HTML extractor tests and Foundation unit tests on macOS, then compiles only the iPhone/iPad device app. It does not prepare, build, or run a simulator.
+It runs the HTML extractor tests, Foundation unit tests, and real WebKit cookie-store checks on macOS, then compiles only the iPhone/iPad device app. It does not prepare, build, or run a simulator. The WebKit checks use an in-memory archive instead of the runner's Keychain and invoke observer callbacks explicitly; they verify the app's callback handling, not the framework's delivery of server-cookie notifications.
 
 The **NITechSearch-iOS** artifact contains `NITechSearch-unsigned.ipa`. This is a device build for your sideloading tool to sign using an Apple account or certificate and provisioning profile. It cannot be installed directly while unsigned.
 
-The **iOS-TestResults** artifact contains parser and Swift core test logs. CI does not run UI tests or verify live university access. Builds do not publish to the App Store or TestFlight.
+The **iOS-TestResults** artifact contains parser, Swift core, and WebKit session test logs. CI does not run UI tests or verify live university access. Builds do not publish to the App Store or TestFlight.
 
 To build locally on macOS:
 
@@ -57,7 +57,13 @@ The reservation extractor uses the upstream HTML selectors (`kyuko-shisetsu-nofi
 
 Reservation fetch timestamps show when data was actually fetched. The 60-second update recalculates status from the cached schedule; it does not claim a new network fetch. Pull-to-refresh fetches a fresh reservation table. Automatic iOS background polling is not used.
 
-Login occurs in the university's actual browser pages over HTTPS. The native OpenAM username/password API used by version 1.0 has been removed; its token is not forwarded to the new application-proxy host. The app permits the configured campus host and known university/Microsoft authentication hosts, displays the current login hostname, and waits for the real authentication redirects. When **この端末でログイン状態を保持** is enabled, the app uses its persistent WebKit cookie store; otherwise it uses an in-memory store for the current session. Logout clears the app's browser data and reservation cache. Legacy version-1.0 Keychain credentials are removed where the device's signing configuration permits. The reservation cache is file-protected and excluded from backups. No analytics or advertising SDKs are included.
+Login occurs in the university's actual browser pages over HTTPS. The native OpenAM username/password API used by version 1.0 has been removed; its token is not forwarded to the new application-proxy host. The app permits the configured campus host and known university/Microsoft authentication hosts, displays the current login hostname, and waits for the real authentication redirects.
+
+When **この端末でログイン状態を保持** is enabled, version 1.2 archives the portal/SSO cookies, including session cookies, in a device-only Keychain item after a successful reservation fetch. Cookies are restored before the first portal request on the next launch. Secure, HttpOnly, SameSite, domain, path, session-only status, and absolute expiry are preserved. Expired cookies are skipped; Max-Age is not restarted. Existing WebKit cookies take precedence over older archived values. Cookie rotations/deletions are observed after authentication, and confirmed cookies are also saved when the app backgrounds. Cookie values are never put in UserDefaults, diagnostics, or the reservation cache.
+
+The server remains authoritative for session validity, including cookies without an expiry date. A redirect to university/Microsoft sign-in or a portal password form presents a re-login message while letting SSO finish if possible. HTTP 401 returns to the sign-in screen with the expiry message. Closing a reauthentication screen also returns to sign-in. Network failures retain the saved session. Disabling persistence removes the saved archive and previous persistent browser data, then uses an in-memory WebKit store. Logout stops pending cookie saves before clearing the Keychain archive, WebKit data, and reservation cache.
+
+Legacy version-1.0 Keychain credentials are removed where the device's signing configuration permits. The reservation cache is file-protected and excluded from backups. No analytics or advertising SDKs are included. Upgrading from 1.1 may require one login if WebKit has already lost its session cookies; subsequent verified logins are archived by 1.2. Keychain continuity also requires the same signing team and bundle identifier when sideloading an update.
 
 The loading WebView is attached to the app's window even when invisible. Cancelled or superseded navigation is ignored, while actual failures report the request stage, framework error code, and hostname without exposing URL queries or authentication data. TLS certificate validation remains enabled.
 

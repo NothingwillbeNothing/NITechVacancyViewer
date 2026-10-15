@@ -33,26 +33,26 @@ final class AppStore: ObservableObject {
         guard !isReady else { return }
         isReady = true
         // The new portal owns authentication. Remove passwords saved by 1.0;
-        // new sessions use only the portal's browser cookie store.
+        // new sessions use the portal's cookies and their device-only archive.
         try? legacyCredentials.clear()
         let remember = UserDefaults.standard.object(forKey: "rememberCampusSession") as? Bool ?? true
-        campus.configureSession(remember: remember)
-        if UserDefaults.standard.bool(forKey: "hasCampusSession") {
+        if remember && UserDefaults.standard.bool(forKey: "hasCampusSession") {
             snapshot = cache.load()
             isSignedIn = snapshot?.rooms(on: now) != nil
-            loadPortal(interactive: false)
+            loadPortal(interactive: false, remember: remember)
         }
     }
 
     func signIn(remember: Bool) {
-        campus.configureSession(remember: remember)
         UserDefaults.standard.set(remember, forKey: "rememberCampusSession")
-        loadPortal(interactive: true)
+        loadPortal(interactive: true, remember: remember)
     }
 
-    private func loadPortal(interactive: Bool) {
+    private func loadPortal(interactive: Bool, remember: Bool? = nil) {
         beginOperation { [weak self] id in
             guard let self else { return }
+            if let remember { try await campus.configureSession(remember: remember) }
+            try Task.checkCancellation()
             let result = try await campus.fetch(interactive: interactive)
             try Task.checkCancellation()
             guard generation == id else { return }
@@ -97,6 +97,11 @@ final class AppStore: ObservableObject {
         else if !isDemo && !hasTodayData && !isLoading { refresh() }
     }
 
+    func saveSessionBeforeBackgrounding() async {
+        guard isSignedIn, !isDemo else { return }
+        await campus.saveSessionBeforeBackgrounding()
+    }
+
     func signOut() {
         if isDemo {
             stopOperation()
@@ -105,12 +110,16 @@ final class AppStore: ObservableObject {
         }
         beginOperation { [weak self] id in
             guard let self else { return }
-            await campus.clearSession()
+            var cleanupError: Error?
+            do { try await campus.clearSession() }
+            catch { cleanupError = error }
             guard generation == id else { return }
-            try cache.clear()
+            do { try cache.clear() }
+            catch { if cleanupError == nil { cleanupError = error } }
             try? legacyCredentials.clear()
             UserDefaults.standard.set(false, forKey: "hasCampusSession")
             resetSignedInState()
+            if let cleanupError { throw cleanupError }
         }
     }
 
@@ -145,6 +154,15 @@ final class AppStore: ObservableObject {
             catch is CancellationError { }
             catch {
                 guard let self, generation == id else { return }
+                if let failure = error as? ViewerError {
+                    switch failure {
+                    case .sessionExpired, .sessionStorage:
+                        UserDefaults.standard.set(false, forKey: "hasCampusSession")
+                        try? campus.invalidateSavedSession()
+                        resetSignedInState()
+                    default: break
+                    }
+                }
                 errorMessage = error.localizedDescription
             }
             guard let self, generation == id else { return }

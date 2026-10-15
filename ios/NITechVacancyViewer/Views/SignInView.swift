@@ -20,6 +20,8 @@ struct SignInView: View {
                         .font(.subheadline).foregroundStyle(.secondary)
                     Toggle("この端末でログイン状態を保持", isOn: $remember)
                         .font(.subheadline).disabled(store.isLoading)
+                    Text("ログイン状態を保持すると、次回の起動時に復元します。有効期限が切れた場合は再ログインをご案内します。")
+                        .font(.caption).foregroundStyle(.secondary)
 
                     if let message = store.errorMessage {
                         Label(message, systemImage: "exclamationmark.triangle")

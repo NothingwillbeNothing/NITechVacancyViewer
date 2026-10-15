@@ -30,11 +30,22 @@ jobs:
       - name: Reservation HTML extraction tests
         working-directory: ios/Tests
         run: |
+          set -o pipefail
           npm ci --ignore-scripts
           npm test 2>&1 | tee ../build/html-tests.log
       - name: Core unit tests
         working-directory: ios
-        run: swift test 2>&1 | tee build/core-tests.log
+        run: |
+          set -o pipefail
+          swift test 2>&1 | tee build/core-tests.log
+      - name: WebKit session persistence checks
+        working-directory: ios
+        run: |
+          set -o pipefail
+          swiftc -parse-as-library NITechVacancyViewer/Core/*.swift \
+            NITechVacancyViewer/Services/CampusSessionStore.swift \
+            Tests/SessionPersistenceChecks.swift -o build/session-checks
+          build/session-checks 2>&1 | tee build/session-tests.log
       - name: Build unsigned device IPA
         run: bash ios/scripts/build.sh
       - name: Upload iOS packages
