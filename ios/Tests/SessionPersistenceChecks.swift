@@ -1,5 +1,6 @@
 import Foundation
 import WebKit
+import Darwin
 
 /// Runs on macOS using real WebKit cookie stores and an in-memory Keychain stand-in.
 /// No university credentials, simulator, or access to the runner's Keychain is needed.
@@ -34,15 +35,30 @@ struct SessionPersistenceChecks {
         }
     }
 
-    static func waitUntil(_ condition: () -> Bool) async throws {
+    static func waitUntil(_ operation: String, _ condition: () -> Bool) async throws {
         for _ in 0..<100 {
             if condition() { return }
             try await Task.sleep(nanoseconds: 50_000_000)
         }
-        try require(false, "Cookie observer did not finish within five seconds")
+        try require(false, "Cookie observer did not finish within five seconds: \(operation)")
     }
 
-    static func main() async throws {
+    static func main() {
+        // CFNetwork delivers cookie notifications through the main run loop.
+        // An async command-line main alone only pumps the dispatch queue.
+        Task { @MainActor in
+            do {
+                try await runChecks()
+                exit(0)
+            } catch {
+                fputs("Session check failed: \(error.localizedDescription)\n", stderr)
+                exit(1)
+            }
+        }
+        RunLoop.main.run()
+    }
+
+    static func runChecks() async throws {
         let archive = Archive()
         let firstData = WKWebsiteDataStore.nonPersistent()
         let first = CampusSessionPersistence(store: archive)
@@ -63,19 +79,21 @@ struct SessionPersistenceChecks {
         print("PASS: session cookie is restored before use")
 
         await secondData.httpCookieStore.setCookie(cookie("rotated-login"))
-        try await waitUntil { archive.records.first?.value == "rotated-login" }
+        try await waitUntil("rotation") { archive.records.first?.value == "rotated-login" }
         print("PASS: server cookie rotation updates the archive")
 
         let activeCookie = (await allCookies(secondData.httpCookieStore))[0]
-        await secondData.httpCookieStore.delete(activeCookie)
-        try await waitUntil { archive.records.isEmpty }
+        await withCheckedContinuation { continuation in
+            secondData.httpCookieStore.delete(activeCookie) { continuation.resume() }
+        }
+        try await waitUntil("deletion") { archive.records.isEmpty }
         try await second.restore(into: secondData.httpCookieStore)
         let afterDeletion = await allCookies(secondData.httpCookieStore)
         try require(afterDeletion.isEmpty, "Refresh resurrected a deleted cookie")
         print("PASS: deleted cookies stay deleted during refresh")
 
         await secondData.httpCookieStore.setCookie(cookie("before-logout"))
-        try await waitUntil { !archive.records.isEmpty }
+        try await waitUntil("before logout") { !archive.records.isEmpty }
         let backgroundSave = Task { try await second.saveIfConfirmed() }
         try second.clear()
         _ = try? await backgroundSave.value
