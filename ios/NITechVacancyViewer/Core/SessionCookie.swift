@@ -29,11 +29,11 @@ struct SessionCookie: Codable {
         guard PortalConfiguration.isAllowedCookieDomain(domain),
               expires.map({ $0 > now }) ?? true else { return nil }
         var properties: [HTTPCookiePropertyKey: Any] = [
-            .name: name, .value: value, .domain: domain, .path: path,
-            .discard: sessionOnly
+            .name: name, .value: value, .domain: domain, .path: path
         ]
-        // Darwin expects Discard as a Boolean. A nonempty string such as "FALSE"
-        // can discard the expiry, so preserve the native type used by WebKit.
+        // Discard must be omitted for cookies with an absolute expiry: Darwin
+        // may ignore Expires when a Discard property is present.
+        if sessionOnly && expires == nil { properties[.discard] = true }
         if secure { properties[.secure] = "TRUE" }
         if httpOnly { properties[HTTPCookiePropertyKey("HttpOnly")] = "TRUE" }
         if let expires { properties[.expires] = expires }
