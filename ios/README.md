@@ -33,7 +33,7 @@ For an actual iPhone, select your Apple development team in **Signing & Capabili
 
 The **iOS Build** workflow runs on a macOS runner on pushes to `feat/ios-*`, `dev`, `main`, or `master`, on pull requests touching iOS files, and on manual dispatch. Forks may need Actions enabled once in the repository's **Actions** tab.
 
-It runs the HTML extractor tests, Foundation unit tests, and real WebKit cookie-store checks on macOS, then compiles only the iPhone/iPad device app. It does not prepare, build, or run a simulator. The WebKit checks use an in-memory archive instead of the runner's Keychain.
+It runs the HTML extractor tests, Foundation unit tests, and real WebKit cookie-store checks on macOS, then compiles only the iPhone/iPad device app. It does not prepare, build, or run a simulator. The WebKit checks use an in-memory archive instead of the runner's Keychain and invoke observer callbacks explicitly; they verify the app's callback handling, not the framework's delivery of server-cookie notifications.
 
 The **NITechSearch-iOS** artifact contains `NITechSearch-unsigned.ipa`. This is a device build for your sideloading tool to sign using an Apple account or certificate and provisioning profile. It cannot be installed directly while unsigned.
 
